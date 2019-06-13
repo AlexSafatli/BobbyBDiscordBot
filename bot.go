@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"./chat"
-	"./commands"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -23,13 +20,13 @@ func NewBot(token string) (b *Bot, err error) {
 		return
 	}
 	b = &Bot{Start: time.Now(), Session: discord}
+	b.ShouldReconnectOnError = true
 	b.routeHandlers()
 	return
 }
 
 func (b *Bot) routeHandlers() {
-	b.AddHandler(chat.DiceRollHandler)
-	b.AddHandler(chat.NewHandler(b.Session, ".about", commands.AboutCommand))
+	b.AddHandler(summonCommand)
 }
 
 // Self returns the User struct associated with the bot user
