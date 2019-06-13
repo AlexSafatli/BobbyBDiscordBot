@@ -14,25 +14,18 @@ import (
 	"./config"
 )
 
-var (
-	// TODO use config library
-	discordToken = config.String("discord-token", "default.token")
-)
-
 func main() {
+	var err error
+
 	rand.Seed(int64(time.Now().Nanosecond()))
 
-	err := config.Parse("discord.toml")
-	if err != nil {
-		log.Fatalln("Could not parse discord toml")
-	}
-
-	discord, _ := NewBot("Bot " + *discordToken)
+	configValues := config.LoadConfigs()
+	discord, _ := NewBot("Bot " + configValues.DiscordToken)
 	if err = discord.Open(); err != nil {
 		log.Println(err)
 		log.Fatalln("Could not open websocket")
 	}
-	log.Println("Loaded bot with token", *discordToken)
+	log.Println("Loaded bot with provided token")
 
 	// Wait here until CTRL-C or another term signal
 	fmt.Println("Bot is now running. Press CTRL-C to exit.")
