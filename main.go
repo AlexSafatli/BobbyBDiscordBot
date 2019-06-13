@@ -28,13 +28,8 @@ func main() {
 	}
 
 	discord, _ := NewBot("Bot " + *discordToken)
-	user, err := discord.Self()
-	if err != nil {
-		log.Fatalln("Could not get user info for bot")
-	}
-	log.SetPrefix(user.Username + " – ")
-
 	if err = discord.Open(); err != nil {
+		log.Println(err)
 		log.Fatalln("Could not open websocket")
 	}
 	log.Println("Loaded bot with token", *discordToken)
